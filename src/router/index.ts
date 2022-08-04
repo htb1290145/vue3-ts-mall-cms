@@ -1,9 +1,11 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import localCache from '@/utils/cache'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/login'
+    // 跳转到首页
+    redirect: '/main'
   },
   {
     path: '/login',
@@ -12,8 +14,8 @@ const routes: Array<RouteRecordRaw> = [
       import(/* webpackChunkName: "views" */ '@/views/login/login.vue')
   },
   {
-    path: '/mian',
-    name: 'mian',
+    path: '/main',
+    name: 'main',
     component: () =>
       import(/* webpackChunkName: "views" */ '@/views/main/main.vue')
   }
@@ -22,6 +24,16 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+// 导航守卫。如果要去的页面是除了登录页面之外的页面，就必须是已经登录的状态（有token）
+router.beforeEach((to) => {
+  if (to.path !== '/login') {
+    const token = localCache.getCache('token')
+    if (!token) {
+      return '/login'
+    }
+  }
 })
 
 export default router

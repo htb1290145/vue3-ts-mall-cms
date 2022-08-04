@@ -31,8 +31,7 @@ class HTBRequest {
     // 2.添加所有实例都有的拦截器
     this.instance.interceptors.request.use(
       (config) => {
-        console.log('所有的请求都有的请求拦截器')
-        console.log(this.showLoading)
+        // console.log('所有的请求都有的请求拦截器')
         if (this.showLoading) {
           // ElLoading
           this.loading = ElLoading.service({
@@ -49,7 +48,7 @@ class HTBRequest {
     )
     this.instance.interceptors.response.use(
       (res) => {
-        console.log('所有的请求都有的响应拦截器')
+        // console.log('所有的请求都有的响应拦截器')
         // 关闭loading
         this.loading?.close()
         return res.data
@@ -71,25 +70,6 @@ class HTBRequest {
       if (config.showLoading === false) {
         this.showLoading = config.showLoading
       }
-      // this.instance
-      // .request<any, T>(config)
-      // .then((res) => {
-      //   // 1.单个请求对数据的处理
-      //   if (config.interceptors?.responseInterceptor) {
-      //     res = config.interceptors.responseInterceptor(res)
-      //   }
-      //   // 2.将showLoading设置true, 这样不会影响下一个请求
-      //   this.showLoading = DEAFULT_LOADING
-
-      //   // 3.将结果resolve返回出去
-      //   resolve(res)
-      // })
-      // .catch((err) => {
-      //   // 将showLoading设置true, 这样不会影响下一个请求
-      //   this.showLoading = DEAFULT_LOADING
-      //   reject(err)
-      //   return err
-      // })
       // 请求的数据处理
       this.instance.request<any, T>(config).then(
         (res) => {

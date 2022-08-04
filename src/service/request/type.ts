@@ -3,7 +3,7 @@ import type { AxiosRequestConfig, AxiosResponse } from 'axios'
 // 拦截器接口
 export interface HTBRequestInterceptors<T = AxiosResponse> {
   // 请求拦截
-  requestInterceptor?: (config: AxiosRequestConfig) => AxiosRequestConfig
+  requestInterceptor?: (config: any) => any
   requestInterceptorCatch?: (error: any) => any
   // 响应拦截
   // responseInterceptor?: (res: AxiosResponse) => AxiosResponse
