@@ -9,6 +9,7 @@ import {
   ElIcon,
   ElInput,
   ElRow,
+  ElCol,
   ElFormItem,
   ElForm,
   ElCheckbox,
@@ -16,7 +17,20 @@ import {
   ElContainer,
   ElAside,
   ElHeader,
-  ElMain
+  ElMain,
+  ElMenu,
+  ElMenuItem,
+  ElSubMenu,
+  ElMenuItemGroup,
+  ElDropdown,
+  ElDropdownMenu,
+  ElDropdownItem,
+  ElAvatar,
+  ElBreadcrumb,
+  ElBreadcrumbItem,
+  ElSelect,
+  ElOption,
+  ElDatePicker
 } from 'element-plus'
 import 'element-plus/dist/index.css'
 const components = [
@@ -27,6 +41,7 @@ const components = [
   ElIcon,
   ElInput,
   ElRow,
+  ElCol,
   ElFormItem,
   ElForm,
   ElCheckbox,
@@ -34,7 +49,20 @@ const components = [
   ElContainer,
   ElAside,
   ElHeader,
-  ElMain
+  ElMain,
+  ElMenu,
+  ElSubMenu,
+  ElMenuItem,
+  ElMenuItemGroup,
+  ElDropdown,
+  ElDropdownMenu,
+  ElDropdownItem,
+  ElAvatar,
+  ElBreadcrumb,
+  ElBreadcrumbItem,
+  ElSelect,
+  ElOption,
+  ElDatePicker
 ]
 
 export default function (app: App) {

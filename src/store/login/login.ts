@@ -8,8 +8,9 @@ import {
   userMenuByRoleIdRequest
 } from '@/service/login/login'
 import router from '@/router'
+import { mapMenuToRoutes } from '@/utils/map-menus'
 
-interface loginState {
+export interface loginState {
   token: string
   userInfo: object
   userMenu: object
@@ -33,6 +34,14 @@ const loginModule: Module<loginState, IRootState> = {
     },
     changeUserMenu(state, userMenu: any) {
       state.userMenu = userMenu
+      // 注册动态路由
+      // userMenus->routes->router.main.children
+      const routes = mapMenuToRoutes(userMenu)
+      // 将routes 添加至 main.children
+      routes.forEach((route) => {
+        // addRoute，给现有的路由添加子路由
+        router.addRoute('main', route)
+      })
     }
   },
   actions: {

@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import localCache from '@/utils/cache'
-
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -18,6 +17,20 @@ const routes: Array<RouteRecordRaw> = [
     name: 'main',
     component: () =>
       import(/* webpackChunkName: "views" */ '@/views/main/main.vue')
+    // 动态路由,注册所有
+    // children: [
+    //   {
+    //     path: '/main/system',
+    //     component: () =>
+    //       import(/* webpackChunkName: "views" */ '@/views/main/cpns/system.vue')
+    //     // component: system
+    //   }
+    // ]
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'notfound',
+    component: () => import('@/views/notfound/notfound.vue')
   }
 ]
 

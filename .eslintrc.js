@@ -19,6 +19,7 @@ module.exports = {
     // 关闭驼峰命名规则
     'vue/multi-word-component-names': 0,
     // 类型any
-    '@typescript-eslint/no-explicit-any': ['off']
+    '@typescript-eslint/no-explicit-any': ['off'],
+    '@typescript-eslint/no-var-requires': 0
   }
 }
