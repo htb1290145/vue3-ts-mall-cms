@@ -1,5 +1,6 @@
 // app的类型
 import { App } from 'vue'
+import 'element-plus/dist/index.css'
 // 局部引用的全局注册element-plus
 import {
   ElButton,
@@ -32,7 +33,6 @@ import {
   ElOption,
   ElDatePicker
 } from 'element-plus'
-import 'element-plus/dist/index.css'
 const components = [
   ElButton,
   ElTabs,

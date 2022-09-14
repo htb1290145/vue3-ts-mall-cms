@@ -1,15 +1,20 @@
 <template>
   <div class="user">
+    <!-- 搜索区域 -->
     <div class="search">
-      <htb-form :form-item="formItems"></htb-form>
+      <!-- v-bind绑定多个属性 -->
+      <htb-form v-bind="formConfig"></htb-form>
     </div>
+    <!-- 表格区域 -->
     <div class="content">2</div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import HtbForm, { IFormItem } from '@/base-ui/form'
+import HtbForm from '@/base-ui/form'
+// 表单配置文件
+import { formConfig } from './config/search.config'
 
 export default defineComponent({
   name: 'user',
@@ -17,15 +22,8 @@ export default defineComponent({
     HtbForm
   },
   setup() {
-    // 配置文件
-    const formItems: IFormItem[] = [
-      { label: '用户名', rules: [], placeholder: '请输入用户名' },
-      { label: '密码', rules: [], placeholder: '请输入密码' },
-      { label: '喜欢的运动', rules: [], placeholder: '请选择喜欢的运动' },
-      { label: '创建时间', rules: [], placeholder: '请选择创建时间' }
-    ]
     return {
-      formItems
+      formConfig
     }
   }
 })

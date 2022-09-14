@@ -9,7 +9,7 @@
         background-color="#0c2135"
         text-color="#b7bdc3"
         active-text-color="#0a60bd"
-        default-active="1"
+        :default-active="defaultValue"
         :collapse="collapse"
       >
         <template v-for="item in userMenu" :key="item.id">
@@ -50,9 +50,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import { pathMapToMenu } from '@/utils/map-menus'
 
 export default defineComponent({
   props: {
@@ -63,19 +64,26 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
+    // ref对象，使用需要.value
     const userMenu = computed(() => store.state.login.userMenu)
+
+    // 菜单刷新后的选中->根据页面url得到当前激活菜单的id
+    const route = useRoute()
+    const currentPath = route.path
+    const menu = pathMapToMenu(userMenu.value, currentPath)
+    const defaultValue = ref(menu.id + '')
 
     // router
     const router = useRouter()
     const menuItemClick = (item: any) => {
-      console.log(item)
       router.push({
         path: item.url ?? '/not-found'
       })
     }
     return {
       userMenu,
-      menuItemClick
+      menuItemClick,
+      defaultValue
     }
   }
 })
