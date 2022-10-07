@@ -60,7 +60,7 @@ class HTBRequest {
     )
   }
 
-  request<T>(config: HTBRequestConfig<T>): Promise<T> {
+  request<T = any>(config: HTBRequestConfig<T>): Promise<T> {
     return new Promise((resolve, reject) => {
       // 3.某个实例某个请求的拦截器。从config取出的。
       if (config.interceptors?.requestInterceptor) {
@@ -93,19 +93,19 @@ class HTBRequest {
     })
   }
 
-  get<T>(config: HTBRequestConfig<T>): Promise<T> {
+  get<T = any>(config: HTBRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'GET' })
   }
 
-  post<T>(config: HTBRequestConfig<T>): Promise<T> {
+  post<T = any>(config: HTBRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'POST' })
   }
 
-  delete<T>(config: HTBRequestConfig<T>): Promise<T> {
+  delete<T = any>(config: HTBRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'DELETE' })
   }
 
-  patch<T>(config: HTBRequestConfig<T>): Promise<T> {
+  patch<T = any>(config: HTBRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'PATCH' })
   }
 }

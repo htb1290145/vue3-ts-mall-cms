@@ -104,6 +104,8 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 
 import { setupStore } from './store'
 // 防止Vuex的数据刷新后丢失，从缓存中获取
+app.use(store)
 setupStore()
 
-app.use(store).use(router).mount('#app')
+app.use(router)
+app.mount('#app')

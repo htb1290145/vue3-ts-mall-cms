@@ -20,6 +20,7 @@ module.exports = {
     'vue/multi-word-component-names': 0,
     // 类型any
     '@typescript-eslint/no-explicit-any': ['off'],
-    '@typescript-eslint/no-var-requires': 0
+    '@typescript-eslint/no-var-requires': 0,
+    'vue/no-mutating-props': 'off'
   }
 }

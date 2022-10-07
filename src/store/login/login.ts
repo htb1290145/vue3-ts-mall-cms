@@ -44,6 +44,7 @@ const loginModule: Module<loginState, IRootState> = {
       })
     }
   },
+  // 网络请求放入actions
   actions: {
     // 登录验证
     async accountLoginAction({ commit }, payload: IAccount) {

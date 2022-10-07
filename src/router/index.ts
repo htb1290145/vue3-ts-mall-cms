@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+// 缓存
 import localCache from '@/utils/cache'
+import { firstMenu } from '@/utils/map-menus'
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -39,13 +42,18 @@ const router = createRouter({
   routes
 })
 
-// 导航守卫。如果要去的页面是除了登录页面之外的页面，就必须是已经登录的状态（有token）
+// 导航守卫。
 router.beforeEach((to) => {
+  // 如果要去的页面是除了登录页面之外的页面，就必须是已经登录的状态（有token）
   if (to.path !== '/login') {
     const token = localCache.getCache('token')
     if (!token) {
       return '/login'
     }
+  }
+  // 页面重定向，如果去到主页，就跳转到firstMenu
+  if (to.path === '/main') {
+    return firstMenu.url
   }
 })
 

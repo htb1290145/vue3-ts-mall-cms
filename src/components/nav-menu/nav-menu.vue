@@ -12,7 +12,7 @@
         :default-active="defaultValue"
         :collapse="collapse"
       >
-        <template v-for="item in userMenu" :key="item.id">
+        <template v-for="item in userMenus" :key="item.id">
           <!-- 二级菜单 -->
           <!-- type=1 可展开的菜单。type=2，可点击的切换路由菜单 -->
           <template v-if="item.type === 1">
@@ -64,24 +64,24 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
-    // ref对象，使用需要.value
-    const userMenu = computed(() => store.state.login.userMenu)
+    const userMenus = computed(() => store.state.login.userMenu)
 
     // 菜单刷新后的选中->根据页面url得到当前激活菜单的id
     const route = useRoute()
     const currentPath = route.path
-    const menu = pathMapToMenu(userMenu.value, currentPath)
+    const menu = pathMapToMenu(userMenus.value, currentPath)
     const defaultValue = ref(menu.id + '')
 
     // router
     const router = useRouter()
     const menuItemClick = (item: any) => {
+      // 菜单刷新后的中->根据页面url得到当前激活菜单的id
       router.push({
         path: item.url ?? '/not-found'
       })
     }
     return {
-      userMenu,
+      userMenus,
       menuItemClick,
       defaultValue
     }

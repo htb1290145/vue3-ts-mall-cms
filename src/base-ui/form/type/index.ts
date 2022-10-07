@@ -1,7 +1,10 @@
 type IFormType = 'input' | 'password' | 'select' | 'datepicker'
 
+// 表单项类型
 export interface IFormItem {
   type: IFormType
+  // v-model的field 字段
+  field: string
   label: string
   rules?: any[]
   placeholder?: any
@@ -11,6 +14,7 @@ export interface IFormItem {
   otherOptions?: any
 }
 
+// 表单类型：包括样式等
 export interface IForm {
   // 表单项配置文件
   formItems: IFormItem[]

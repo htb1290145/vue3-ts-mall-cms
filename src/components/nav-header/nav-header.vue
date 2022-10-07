@@ -10,39 +10,49 @@
     <!-- 头部导航显示 -->
     <div class="menu-content">
       <!-- 左侧面包屑 -->
-      <el-breadcrumb separator="/">
-        <!-- 一级菜单 -->
-        <el-breadcrumb-item :to="{ path: '/main' }"
-          >一级菜单</el-breadcrumb-item
-        >
-        <!-- 二级菜单 -->
-        <el-breadcrumb-item :to="{ path: '/main/system/user' }">
-          二级菜单</el-breadcrumb-item
-        >
-      </el-breadcrumb>
-      <!-- 右侧下拉菜单 -->
+      <breadcrumb :breadcrumbs="breadcrumbs">
+        {{ breadcrumbs }}
+      </breadcrumb>
+      <!-- 右侧用户下拉菜单 -->
       <NavHeaderUserInfo></NavHeaderUserInfo>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 import NavHeaderUserInfo from './nav-header-userInfo.vue'
+import Breadcrumb from '@/base-ui/breadcrumb/index'
+import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
+import { pathMapBreadcrumb } from '@/utils/map-menus'
 
 export default defineComponent({
-  components: { NavHeaderUserInfo },
+  components: { NavHeaderUserInfo, Breadcrumb },
   emits: ['foldChange'],
   setup(props, { emit }) {
+    // 菜单折叠
     const isFold = ref(false)
     const foldChange = () => {
       isFold.value = !isFold.value
       emit('foldChange', isFold.value)
     }
 
+    // 面包屑菜单 -> 根据url路径
+    const store = useStore()
+    const userMenu = computed(() => store.state.login.userMenu)
+    const route = useRoute()
+    // 每次点击菜单，当前路由会发生改变
+    const currentPath = computed(() => route.path)
+    // 面包屑数据会变化
+    const breadcrumbs = computed(() => {
+      return pathMapBreadcrumb(userMenu.value, currentPath.value)
+    })
+
     return {
       isFold,
-      foldChange
+      foldChange,
+      breadcrumbs
     }
   }
 })
