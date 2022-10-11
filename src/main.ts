@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+// 全局注册
 import { globalRegister } from './global'
 // 重置样式css
 import 'normalize.css'
@@ -14,8 +15,14 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 // import 'element-plus/dist/index.css'
 // .use(ElementPlus)
 
-const app = createApp(App)
+// ele的国际化 全局
+// import ElementPlus from 'element-plus'
+// import zhCn from 'element-plus/es/locale/lang/zh-cn'
+// app.use(ElementPlus, {
+//   locale: zhCn
+// })
 
+const app = createApp(App)
 //global全局一次性注册
 globalRegister(app)
 // app.use(globalRegister)
@@ -102,8 +109,8 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 //   }
 // })
 
-import { setupStore } from './store'
 // 防止Vuex的数据刷新后丢失，从缓存中获取
+import { setupStore } from './store'
 app.use(store)
 setupStore()
 

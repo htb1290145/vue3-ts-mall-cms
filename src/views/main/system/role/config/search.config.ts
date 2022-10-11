@@ -17,21 +17,10 @@ export const searchFormConfig: IForm = {
       placeholder: '请输入用户名'
     },
     {
-      field: 'password',
-      type: 'password',
-      label: '密码',
-      placeholder: '请输入密码'
-    },
-    {
-      field: 'sport',
-      type: 'select',
-      label: '喜欢的运动',
-      placeholder: '请选择喜欢的运动',
-      // 多选框选项
-      options: [
-        { label: '篮球', value: '篮球' },
-        { label: '足球', value: '足球' }
-      ]
+      field: 'intro',
+      type: 'input',
+      label: '角色权限',
+      placeholder: '请输入角色权限'
     },
     {
       field: 'createTime',

@@ -1,6 +1,6 @@
 <template>
   <div class="htb-table">
-    <!-- 表格标题 -->
+    <!-- header -->
     <div class="header">
       <slot name="header">
         <div class="title">{{ title }}</div>
@@ -10,7 +10,7 @@
       </slot>
     </div>
 
-    <!-- 表格部分 -->
+    <!-- 表格 -->
     <el-table
       :data="tableData"
       stripe
@@ -27,6 +27,7 @@
       ></el-table-column>
       <!-- 序号列 -->
       <el-table-column
+        label="序号"
         v-if="showIndexColumn"
         type="index"
         align="center"
@@ -44,16 +45,23 @@
       </template>
     </el-table>
 
-    <!-- 表格底部部分 -->
+    <!-- footer -->
     <div class="footer">
-      TODO:
-      <slot name="footer">表格底部</slot>
+      <slot name="footer">
+        <el-pagination
+          v-model:page-size="pageSize"
+          v-model:currentPage="currentPage"
+          :page-sizes="[5, 10, 20, 50]"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+        />
+      </slot>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 
 export default defineComponent({
   props: {
@@ -79,26 +87,55 @@ export default defineComponent({
     },
     // 表格字段
     propList: {
-      type: Array,
-      required: true
+      type: Array
+    },
+    // 分页器总计
+    total: {
+      type: Number,
+      default: 0
     }
   },
-  emits: ['selectionChange'],
+  emits: ['selectionChange', 'handlePageSizeChange', 'handleCurrentChange'],
   setup(props, { emit }) {
+    // 1.表格相关
+    // 多选框变化事件
     const handleSelectionChange = (value: any) => {
       emit('selectionChange', value)
     }
-    return { handleSelectionChange }
+
+    // 2.分页器相关
+    const pageSize = ref()
+    const currentPage = ref()
+
+    watch(pageSize, (newValue: any) => {
+      emit('handlePageSizeChange', newValue)
+    })
+    watch(currentPage, (newValue: any) => {
+      emit('handleCurrentChange', newValue)
+    })
+
+    return {
+      handleSelectionChange,
+      currentPage,
+      pageSize
+    }
   }
 })
 </script>
 
 <style lang="less" scoped>
-.title {
-  font-size: 20px;
-  font-weight: 700;
+.header {
+  display: flex;
+  justify-content: space-between;
+  .title {
+    font-size: 20px;
+    font-weight: 700;
+  }
 }
 .el-table {
-  margin-top: 20px;
+  margin: 20px 0;
+}
+.el-pagination {
+  justify-content: flex-end;
 }
 </style>
