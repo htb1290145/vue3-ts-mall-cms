@@ -17,6 +17,7 @@
       border
       style="width: 100%"
       @selection-change="handleSelectionChange"
+      v-bind="childrenProps"
     >
       <!-- 选择列 -->
       <el-table-column
@@ -35,7 +36,8 @@
       ></el-table-column>
       <!-- 数据区域 -->
       <template v-for="item in propList" :key="item.prop">
-        <el-table-column v-bind="item" align="center">
+        <el-table-column v-bind="item" align="center" show-overflow-tooltip>
+          <!-- 自定义插槽：由传入的propList.slotName决定 -->
           <template #default="scope">
             <slot :name="item.slotName" :row="scope.row">{{
               scope.row[item.prop]
@@ -46,14 +48,14 @@
     </el-table>
 
     <!-- footer -->
-    <div class="footer">
+    <div class="footer" v-if="showFooter">
       <slot name="footer">
         <el-pagination
-          v-model:page-size="pageSize"
-          v-model:currentPage="currentPage"
-          :page-sizes="[5, 10, 20, 50]"
+          v-model:page-size="page.pageSize"
+          v-model:currentPage="page.currentPage"
+          :page-sizes="[5, 10, 20]"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
+          :total="dataTotal"
         />
       </slot>
     </div>
@@ -61,7 +63,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, watch } from 'vue'
 
 export default defineComponent({
   props: {
@@ -89,13 +91,28 @@ export default defineComponent({
     propList: {
       type: Array
     },
+    // 某些页面table特有的属性
+    childrenProps: {
+      type: Object,
+      default: () => ({})
+    },
     // 分页器总计
-    total: {
+    dataTotal: {
       type: Number,
       default: 0
+    },
+    // 分页器的数据，从pageContent通过v-model传递
+    page: {
+      type: Object,
+      default: () => ({ currentPage: 1, pageSize: 10 })
+    },
+    //是否显示footer
+    showFooter: {
+      type: Boolean,
+      default: true
     }
   },
-  emits: ['selectionChange', 'handlePageSizeChange', 'handleCurrentChange'],
+  emits: ['selectionChange', 'update:pageSize', 'update:currentPage'],
   setup(props, { emit }) {
     // 1.表格相关
     // 多选框变化事件
@@ -104,20 +121,29 @@ export default defineComponent({
     }
 
     // 2.分页器相关
-    const pageSize = ref()
-    const currentPage = ref()
-
-    watch(pageSize, (newValue: any) => {
-      emit('handlePageSizeChange', newValue)
-    })
-    watch(currentPage, (newValue: any) => {
-      emit('handleCurrentChange', newValue)
-    })
+    watch(
+      () => props.page.pageSize,
+      // (pageSize: number) => {
+      //   console.log('update:pageSize')
+      //   emit('update:pageSize', { ...props.page, pageSize })
+      // }
+      (pageSize: number) => {
+        emit('update:pageSize', pageSize)
+      }
+    )
+    watch(
+      () => props.page.currentPage,
+      // (currentPage: number) => {
+      //   console.log('update:currentPage')
+      //   emit('update:currentPage', { ...props.page, currentPage })
+      // }
+      (currentPage: number) => {
+        emit('update:currentPage', currentPage)
+      }
+    )
 
     return {
-      handleSelectionChange,
-      currentPage,
-      pageSize
+      handleSelectionChange
     }
   }
 })

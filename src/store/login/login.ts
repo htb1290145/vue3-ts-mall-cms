@@ -8,12 +8,14 @@ import {
   userMenuByRoleIdRequest
 } from '@/service/login/login'
 import router from '@/router'
-import { mapMenuToRoutes } from '@/utils/map-menus'
+import { mapMenuToRoutes, mapMenusToPermission } from '@/utils/map-menus'
 
 export interface loginState {
   token: string
   userInfo: object
   userMenu: object
+  // 按钮权限
+  permissions: string[]
 }
 
 const loginModule: Module<loginState, IRootState> = {
@@ -22,7 +24,8 @@ const loginModule: Module<loginState, IRootState> = {
     return {
       token: '',
       userInfo: {},
-      userMenu: []
+      userMenu: [],
+      permissions: []
     }
   },
   mutations: {
@@ -37,11 +40,16 @@ const loginModule: Module<loginState, IRootState> = {
       // 注册动态路由
       // userMenus->routes->router.main.children
       const routes = mapMenuToRoutes(userMenu)
+
       // 将routes 添加至 main.children
       routes.forEach((route) => {
         // addRoute，给现有的路由添加子路由
         router.addRoute('main', route)
       })
+
+      // 获取用户的按钮权限
+      const permissions = mapMenusToPermission(userMenu)
+      state.permissions = permissions
     }
   },
   // 网络请求放入actions

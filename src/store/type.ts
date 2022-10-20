@@ -3,7 +3,9 @@ import { systemState } from './main/system/system'
 
 export interface IRootState {
   account: string
-  // password: string
+  // password: string,
+  entireDepartment: any[]
+  entireRole: any[]
 }
 
 // 模块的接口

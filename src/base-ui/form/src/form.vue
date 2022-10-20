@@ -4,12 +4,13 @@
     <div class="header">
       <slot name="header"></slot>
     </div>
-    <el-form :label-width="labelWidth" ref="formRef">
+    <el-form :label-width="labelWidth">
       <el-row>
         <template v-for="item in formItems" :key="item.label">
           <!-- v-bind绑定多个属性 -->
           <el-col v-bind="colLayout">
             <el-form-item
+              v-if="!item.isHidden"
               :label="item.label"
               :rules="item.rules"
               :style="itemStyle"
@@ -18,6 +19,15 @@
               <template
                 v-if="item.type === 'input' || item.type === 'password'"
               >
+                <!-- (1.:model-value的方式 -->
+                <!-- <el-input
+                  :placeholder="item.placeholder"
+                  v-bind="item.otherOptions"
+                  :show-password="item.type === 'password'"
+                  :model-value="modelValue[item.field]"
+                  @update:modelValue="handleValueChange($event, item.field)"
+                /> -->
+                <!-- (2.v-model的方式 -->
                 <el-input
                   :placeholder="item.placeholder"
                   v-bind="item.otherOptions"
@@ -62,10 +72,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, watch } from 'vue'
+import { defineComponent, PropType, watch, ref } from 'vue'
 import { IFormItem } from '../type'
-// import type { FormInstance } from 'element-plus'
-import { ElForm } from 'element-plus'
 
 export default defineComponent({
   props: {
@@ -103,7 +111,12 @@ export default defineComponent({
   },
   emit: ['update:modelValue'],
   setup(props, { emit }) {
-    // 组件v-model的写法
+    // (1-直接:model-value的方式
+    // const handleValueChange = (value: any, field: string) => {
+    //   emit('update:modelValue', { ...props.modelValue, [field]: value })
+    // }
+
+    // (2-组件v-model的写法：将传递进来的formData拷贝一份作为表单的数据
     const formData = ref({ ...props.modelValue })
     // 监听数据改变，emit发射。对象的属性改变，要深度监听
     watch(
@@ -115,19 +128,17 @@ export default defineComponent({
         deep: true
       }
     )
-    // const formRef = ref<FormInstance>()
-    const formRef = ref<InstanceType<typeof ElForm>>()
-    // const resetForm = () => {
-    //   formRef.value.resetFields()
-    //   console.log('resetForm')
-    // }
-    const resetForm = () => {
-      formRef.value?.resetFields()
-    }
+
+    // 2-重置表单：重置v-model数据
+    watch(
+      () => props.modelValue,
+      (newValue) => {
+        formData.value = { ...newValue }
+      }
+    )
     return {
-      formData,
-      formRef,
-      resetForm
+      formData
+      // handleValueChange
     }
   }
 })
