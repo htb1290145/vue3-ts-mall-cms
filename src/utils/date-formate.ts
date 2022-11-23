@@ -9,7 +9,8 @@ export function formatUtcString(
   utcString: string,
   format: string = DATE_TIME_FORMAT
 ) {
-  return dayjs.utc(utcString).format(format)
+  // utc默认为0时区，与中国相差八小时
+  return dayjs.utc(utcString).utcOffset(8).format(format)
 }
 
 // 零时区

@@ -32,7 +32,8 @@
                   :placeholder="item.placeholder"
                   v-bind="item.otherOptions"
                   :show-password="item.type === 'password'"
-                  v-model="formData[`${item.field}`]"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
                 />
               </template>
               <!-- 多选框 -->
@@ -41,14 +42,16 @@
                   :placeholder="item.placeholder"
                   v-bind="item.otherOptions"
                   style="width: 100%"
-                  v-model="formData[`${item.field}`]"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
                 >
                   <el-option
                     v-for="option in item.options"
                     :key="option.value"
                     :value="option.value"
-                    >{{ option.label }}</el-option
-                  >
+                    :label="option.label"
+                    >{{ option.label }}
+                  </el-option>
                 </el-select>
               </template>
               <!-- 日期选择器 -->
@@ -56,8 +59,10 @@
                 <el-date-picker
                   v-bind="item.otherOptions"
                   style="width: 100%"
-                  v-model="formData[`${item.field}`]"
-                ></el-date-picker>
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
+                >
+                </el-date-picker>
               </template>
             </el-form-item>
           </el-col>
@@ -72,7 +77,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, watch, ref } from 'vue'
+import { defineComponent, PropType, ref } from 'vue'
 import { IFormItem } from '../type'
 
 export default defineComponent({
@@ -119,26 +124,29 @@ export default defineComponent({
     // (2-组件v-model的写法：将传递进来的formData拷贝一份作为表单的数据
     const formData = ref({ ...props.modelValue })
     // 监听数据改变，emit发射。对象的属性改变，要深度监听
-    watch(
-      formData,
-      (newValue) => {
-        emit('update:modelValue', newValue)
-      },
-      {
-        deep: true
-      }
-    )
+    // watch(
+    //   formData,
+    //   (newValue) => {
+    //     emit('update:modelValue', newValue)
+    //   },
+    //   {
+    //     deep: true
+    //   }
+    // )
 
-    // 2-重置表单：重置v-model数据
-    watch(
-      () => props.modelValue,
-      (newValue) => {
-        formData.value = { ...newValue }
-      }
-    )
+    // // 2-重置表单：重置v-model数据
+    // watch(
+    //   () => props.modelValue,
+    //   (newValue) => {
+    //     formData.value = { ...newValue }
+    //   }
+    // )
+    const handleValueChange = (value: any, field: string) => {
+      emit('update:modelValue', { ...props.modelValue, [field]: value })
+    }
     return {
-      formData
-      // handleValueChange
+      formData,
+      handleValueChange
     }
   }
 })

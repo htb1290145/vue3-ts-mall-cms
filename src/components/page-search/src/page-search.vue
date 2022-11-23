@@ -5,7 +5,11 @@
     <!-- 1.向form子组件传递formDate，会导致在form中修改props -->
     <!-- <htb-form v-bind="searchFormConfig" :formData="formData"></htb-form> -->
     <!-- 2.v-model双向绑定后，在form中的props为modelValue -->
-    <HtbForm v-bind="searchFormConfig" v-model="formData">
+    <HtbForm
+      v-bind="searchFormConfig"
+      v-model="formData"
+      :formItems="formItems"
+    >
       <!-- 头部 -->
       <template #header>
         <h1>高级检索</h1>
@@ -70,7 +74,8 @@ export default defineComponent({
     return {
       formData,
       handleResetClick,
-      handleSearchClick
+      handleSearchClick,
+      formItems
     }
   }
 })

@@ -29,14 +29,14 @@ export const dialogConfig: IForm = {
       placeholder: '请输入电话号码'
     },
     {
-      field: 'department',
+      field: 'departmentId',
       type: 'select',
       label: '部门',
       placeholder: '请选择部门',
       options: []
     },
     {
-      field: 'role',
+      field: 'roleId',
       type: 'select',
       label: '角色',
       placeholder: '请选择角色',

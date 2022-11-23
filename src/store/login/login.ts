@@ -55,13 +55,17 @@ const loginModule: Module<loginState, IRootState> = {
   // 网络请求放入actions
   actions: {
     // 登录验证
-    async accountLoginAction({ commit }, payload: IAccount) {
+    async accountLoginAction({ commit, dispatch }, payload: IAccount) {
       // 1.实现登录逻辑
       const loginResult = await accountLoginRequest(payload)
       const { id, token } = loginResult.data
       commit('changeToken', token)
       // 缓存token至本地，请求拦截器方便使用
       localCache.setCache('token', token)
+      // 发送网络初始化的请求(包括完整的角色和部门列表)
+      // 请求根vuex中的action
+      dispatch('getInitialDataAction', null, { root: true })
+
       // 2.请求用户信息
       const userInfoResult = await loginUserInfoByIdRequest(id)
       const userInfo = userInfoResult.data

@@ -9,9 +9,6 @@ export function usePageSearch() {
   }
   // 搜索按钮：拼接queryInfo
   const handleSearchClick = (queryInfo: any) => {
-    console.log('搜索')
-
-    console.log(queryInfo)
     pageContentRef.value?.getPageData(queryInfo)
   }
   // 元组方式

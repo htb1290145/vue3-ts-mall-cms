@@ -1,7 +1,7 @@
 <template>
   <div class="nav-header-userInfo">
     <!-- 菜单外部 -->
-    <el-dropdown>
+    <el-dropdown @command="handleCommand">
       <span class="el-dropdown-link">
         <el-avatar
           size="small"
@@ -13,7 +13,7 @@
       <!-- 菜单内部 -->
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item>
+          <el-dropdown-item command="quitLogin">
             <el-icon><CircleClose /></el-icon>
             退出登录
           </el-dropdown-item>
@@ -28,12 +28,22 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
+import localCache from '@/utils/cache'
+import router from '@/router'
 
 export default defineComponent({
   setup() {
     const store = useStore()
     const userName = computed(() => store.state.login.userInfo.name)
-    return { userName }
+    // dropDown的事件
+    const handleCommand = (command: string | number | object) => {
+      console.log(command)
+      console.log('quitLogin')
+      // 退出登录 -> 1.清除localStorage中的token 2.跳转至login
+      localCache.deleteCache('token')
+      router.push('/login')
+    }
+    return { userName, handleCommand }
   }
 })
 </script>

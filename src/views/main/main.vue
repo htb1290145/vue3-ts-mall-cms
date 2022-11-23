@@ -27,13 +27,18 @@ import { defineComponent, ref } from 'vue'
 import NavMenu from '@/components/nav-menu/nav-menu.vue'
 import NavHeader from '@/components/nav-header/nav-header.vue'
 
+import emitter from '@/utils/mitt'
+
 export default defineComponent({
   components: { NavMenu, NavHeader },
-  setup() {
+  setup(props) {
     const isCollapse = ref(false)
     const handleFoldChange = (isFold: boolean) => {
       isCollapse.value = isFold
+      // echart重绘:事件总线
+      emitter.emit('isResize')
     }
+
     return {
       isCollapse,
       handleFoldChange

@@ -1,6 +1,11 @@
 import { Module } from 'vuex'
 import { IRootState } from '@/store/type'
-import { getPageListData, deletePageData } from '@/service/mian/system/system'
+import {
+  getPageListData,
+  deletePageData,
+  createPageListData,
+  editPageListData
+} from '@/service/mian/system/system'
 
 // 路径映射
 const pageUrlMap: any = {
@@ -11,6 +16,7 @@ const pageUrlMap: any = {
 }
 
 export interface systemState {
+  queryInfo: object
   usersList: any[]
   usersCount: number
   roleList: any[]
@@ -24,6 +30,7 @@ const systemModule: Module<systemState, IRootState> = {
   namespaced: true,
   state: () => {
     return {
+      queryInfo: {},
       usersList: [],
       usersCount: 0,
       roleList: [],
@@ -31,7 +38,8 @@ const systemModule: Module<systemState, IRootState> = {
       goodsList: [],
       goodsCount: 0,
       menuList: [],
-      menuCount: 0
+      menuCount: 0,
+      roleMenusList: []
     }
   },
   getters: {
@@ -48,6 +56,9 @@ const systemModule: Module<systemState, IRootState> = {
     }
   },
   mutations: {
+    changeQueryInfo(state, queryInfo: object) {
+      state.queryInfo = queryInfo
+    },
     changeUsersList(state, list: any[]) {
       state.usersList = list
     },
@@ -95,7 +106,6 @@ const systemModule: Module<systemState, IRootState> = {
       const pageUrl = pageUrlMap[pageName]
       // 二、页面发送请求
       const userListResult = await getPageListData(pageUrl, payload.queryInfo)
-
       // 三、将数据存储在state中
       const { list, totalCount } = userListResult.data
       const changePageName =
@@ -105,7 +115,7 @@ const systemModule: Module<systemState, IRootState> = {
     },
 
     // 删除
-    async deletePageDataAction({ dispatch }, payload: any) {
+    async deletePageDataAction(context, payload: any) {
       // 1.获取pageName和id -> url: 'pageName + id
       const { pageName, id } = payload
       const pageUrl = `/${pageName}/${id}`
@@ -113,8 +123,32 @@ const systemModule: Module<systemState, IRootState> = {
       // 2.发送删除网络请求
       await deletePageData(pageUrl)
 
-      // 3.删除后重新刷新列表
-      dispatch('getPageListAction', {
+      // 3.删除后重新刷新列表:可将pageContent中的pageInfo在Vuex中保存一份，就可以查询当前参数的表格
+      // TODO: pageContent中的pageInfo不会变更
+      context.dispatch('getPageListAction', {
+        pageName,
+        queryInfo: { offset: 0, size: 10 }
+      })
+    },
+
+    // 新建
+    async createPageDataAction(context, payload: any) {
+      const { pageName, newData } = payload
+      await createPageListData(`/${pageName}`, newData)
+      // 新建后重新刷新列表:可将pageContent中的pageInfo在Vuex中保存一份，就可以查询当前参数的表格
+      context.dispatch('getPageListAction', {
+        pageName,
+        queryInfo: { offset: 0, size: 10 }
+      })
+    },
+    // 编辑
+    async editPageDataAction(context, payload: any) {
+      const { pageName, editData, id } = payload
+      const result = await editPageListData(`/${pageName}/${id}`, editData)
+      console.log(result)
+
+      // 新建后重新刷新列表:可将pageContent中的pageInfo在Vuex中保存一份，就可以查询当前参数的表格
+      context.dispatch('getPageListAction', {
         pageName,
         queryInfo: { offset: 0, size: 10 }
       })

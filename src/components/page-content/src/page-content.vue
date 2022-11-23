@@ -63,7 +63,6 @@ import { defineComponent, computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import HtbTable from '@/base-ui/table/index'
 import { usePermission } from '@/hooks/use-permissions'
-import { emit } from 'process'
 
 export default defineComponent({
   components: { HtbTable },
@@ -122,6 +121,14 @@ export default defineComponent({
     // 监听分页器数据pageInfo,改变时重新发起网络请求
     watch(pageInfo.value, () => {
       getPageData()
+      // 将pageInfo保存至Vuex
+      // store.commit('system/changeQueryInfo', {
+      //   queryInfo: {
+      //     // offset = currentPage * pageSize
+      //     offset: (pageInfo.value.currentPage - 1) * pageInfo.value.pageSize,
+      //     size: pageInfo.value.pageSize
+      //   }
+      // })
     })
 
     // 4.获取其他的动态插槽名称
@@ -133,17 +140,20 @@ export default defineComponent({
       return true
     })
 
-    // 5.删除/编辑等
+    // 控制dailog显示与否
+    const handleNewClick = () => {
+      emit('newBtnClick')
+    }
+    // 5.table中的删除
     const handleDeleteClick = (item: any) => {
       store.dispatch('system/deletePageDataAction', {
         pageName: props.pageName,
         id: item.id
       })
     }
-    // 控制dailog显示与否
-    const handleNewClick = () => {
-      emit('newBtnClick')
-    }
+
+    // 6.table中的编辑
+    // item === scope.row
     const handleEditClick = (item: any) => {
       emit('editBtnClick', item)
     }

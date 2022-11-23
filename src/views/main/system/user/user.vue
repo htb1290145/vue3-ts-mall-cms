@@ -12,19 +12,22 @@
     <!-- 表格区域 -->
     <div class="content">
       <page-content
+        ref="pageContentRef"
         :tableConfig="tableConfig"
         pageName="users"
-        :headerHandleBtnName="'新建用户'"
+        headerHandleBtnName="新建用户"
         @newBtnClick="handleNewClick"
         @editBtnClick="handleEditClick"
       ></page-content>
     </div>
-    <!-- 设计page-content与page-dialog两个组件间的通讯：pageContent的emit => user的函数接收 => pageDialogRef调用内部 -->
+    <!-- 设计page-content与page-dialog两个组件间的通讯：pageContent的emit => user的函数接收 => 通过‘pageDialogRef调用内部 -->
     <page-dialog
       ref="pageDialogRef"
+      pageName="users"
       :dailog-config="dailogConfigRef"
       :defaultInfo="defaultInfo"
-    ></page-dialog>
+    >
+    </page-dialog>
   </div>
 </template>
 
@@ -79,7 +82,7 @@ export default defineComponent({
     const store = useStore()
     const dailogConfigRef = computed(() => {
       const departmentItem = dialogConfig.formItems.find(
-        (item) => item.field === 'department'
+        (item) => item.field === 'departmentId'
       )
       if (departmentItem) {
         departmentItem.options = store.state.entireDepartment.map(
@@ -89,7 +92,7 @@ export default defineComponent({
         )
       }
       const roleItem = dialogConfig.formItems.find(
-        (item) => item.field === 'role'
+        (item) => item.field === 'roleId'
       )
       if (roleItem) {
         roleItem.options = store.state.entireRole.map((item: any) => {

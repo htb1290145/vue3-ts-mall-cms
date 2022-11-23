@@ -1,6 +1,5 @@
 import { RouteRecordRaw } from 'vue-router'
 import { IBreadcrumb } from '@/base-ui/breadcrumb/index'
-import menu from '@/router/main/system/menu/menu'
 
 // 初始页面的菜单高亮Menu
 let firstMenu: any = null
@@ -111,6 +110,22 @@ export function mapMenusToPermission(userMenus: any[]) {
   }
   _recurseGetPermission(userMenus)
   return permissions
+}
+
+// el-tree的数据回显
+export function mapMenusToLeafKeys(menusList: any[]) {
+  const checkedKeys: number[] = []
+  const _recurseGetCheckedKys = (menusList: any[]) => {
+    for (const item of menusList) {
+      if (item.children) {
+        _recurseGetCheckedKys(item.children)
+      } else {
+        checkedKeys.push(item.id)
+      }
+    }
+  }
+  _recurseGetCheckedKys(menusList)
+  return checkedKeys
 }
 
 export { firstMenu }

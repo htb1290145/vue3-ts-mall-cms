@@ -21,6 +21,7 @@ module.exports = {
     // 类型any
     '@typescript-eslint/no-explicit-any': ['off'],
     '@typescript-eslint/no-var-requires': 0,
-    'vue/no-mutating-props': 'off'
+    'vue/no-mutating-props': 'off',
+    '@typescript-eslint/no-unused-vars': 'off'
   }
 }
