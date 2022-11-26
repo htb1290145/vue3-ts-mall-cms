@@ -37,6 +37,7 @@
       </el-col>
       <el-col :span="12">
         <el-card title="分类商品的销量">
+          <!-- 不同城市 -->
           <template #card-content>
             <bar-echart v-bind="categoryProductSale"></bar-echart>
           </template>
