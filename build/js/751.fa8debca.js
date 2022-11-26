@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkvue3_ts_cms_coderwhy"]=self["webpackChunkvue3_ts_cms_coderwhy"]||[]).push([[751],{1751:function(e,t,c){c.r(t),c.d(t,{default:function(){return d}});var n=c(3396);const r={class:"chat"},u=(0,n._)("h2",null,"chat",-1),s=[u];function a(e,t,c,u,a,h){return(0,n.wg)(),(0,n.iD)("div",r,s)}var h=(0,n.aZ)({name:"chat",setup(){return{}}}),o=c(89);const _=(0,o.Z)(h,[["render",a]]);var d=_}}]);
+//# sourceMappingURL=751.fa8debca.js.map
