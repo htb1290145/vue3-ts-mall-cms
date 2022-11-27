@@ -145,7 +145,6 @@ const systemModule: Module<systemState, IRootState> = {
     async editPageDataAction(context, payload: any) {
       const { pageName, editData, id } = payload
       const result = await editPageListData(`/${pageName}/${id}`, editData)
-      console.log(result)
 
       // 新建后重新刷新列表:可将pageContent中的pageInfo在Vuex中保存一份，就可以查询当前参数的表格
       context.dispatch('getPageListAction', {

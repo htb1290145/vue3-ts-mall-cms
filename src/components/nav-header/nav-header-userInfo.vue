@@ -37,8 +37,6 @@ export default defineComponent({
     const userName = computed(() => store.state.login.userInfo.name)
     // dropDown的事件
     const handleCommand = (command: string | number | object) => {
-      console.log(command)
-      console.log('quitLogin')
       // 退出登录 -> 1.清除localStorage中的token 2.跳转至login
       localCache.deleteCache('token')
       router.push('/login')

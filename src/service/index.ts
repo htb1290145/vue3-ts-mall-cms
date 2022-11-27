@@ -18,7 +18,6 @@ export const htbRequest = new HTBRequest({
         config.headers.Authorization = `Bearer ${token}`
       } else {
         // 如果没有token，页面跳转至登录页面
-        console.log('no have token')
       }
       // console.log('同个实例都有的请求成功拦截')
       return config

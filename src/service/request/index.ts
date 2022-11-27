@@ -54,7 +54,6 @@ class HTBRequest {
         return res.data
       },
       (err) => {
-        console.log(err)
         return err
       }
     )
@@ -82,7 +81,6 @@ class HTBRequest {
           resolve(res)
         },
         (err) => {
-          console.log(err)
           // 设置回初始值，不会影响下一个请求
           this.showLoading = DEFAULT_LOADING
           // 请求失败的操作
